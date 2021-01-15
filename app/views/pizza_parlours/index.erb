@@ -1,0 +1,18 @@
+ <h3 class="green-text">Pizza Parlours</h3>
+
+<% @pizza_parlours.each do |pizza_parlour|%>
+<div class="card">
+ <div class="card green darken-3">
+        <div class="card-content white-text">
+          <span class="card-title">pizza_parlour.name</span>
+          <p><%= pizza_parlour.description%></p>
+        </div>
+        <div class="card-action">
+          <a href="/pizza-parlours/<%= pizza_parlour.id %>">More Info</a>
+          <% if pizza_parlour.user == current_user %>
+          <a href="#">Edit</a>
+        </div>
+      </div>
+    </div>
+
+<% end %> 
