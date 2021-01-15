@@ -1,0 +1,22 @@
+<h3 class="green-text text-darken-3">Edit <%= @pizza_parlours.title %></h3>
+
+<form action="/pizza-parlours<%= @pizza_parlour.id %>" methods="post">
+<input type="hidden" name="_method" value="patch">
+    <div class="input-field">   
+        <input type="text" name="pizza_parlour[title]" id="title" value="<%= @pizza_parlour.title %>">
+        <label for="title">Title</label>
+    <div>
+    <div class="input-field">   
+        <textarea id="description" class="materialize-textarea" name="pizza_parlour[description]"><%= @pizza_parlour.description%> </textarea>
+        <label for="description">Description</label>
+    <div>
+
+     
+    <input type="submit" value="Update Pizza Parlour" class="btn green darken-3">
+</form>
+<br>
+
+<form action="/pizza-parlours/<%= @pizza_parlour.id %>" method="post">
+<input type="hidden" name="_method" value="delete"> 
+<input type="submit" value="Delete" class="btn-small red">
+</form> 

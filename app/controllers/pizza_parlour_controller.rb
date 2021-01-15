@@ -22,9 +22,37 @@ class PizzaParloursController < ApplicationController
 
     get '/pizza-parlours/:id' do
         find_pizza_parlour
-        redirect_if_not_exit
+        redirect_if_not_exist
         erb :'pizza_parlours/show'
     end
+
+    get '/pizza_parlours/:id/edit' do
+        find_pizza_parlours
+        redirect_if_not_exist
+        redirect_if_not_owner
+        erb :'pizza-parlours/edit'
+    end
+
+
+    delete '/pizza-parlours/:id' do
+        find_pizza_parlour
+        redirect_if_not_exist
+        @pizza_parlour.destroy
+        redirect "/pizza-parlours"
+        
+    end
+
+
+    patch '/pizza-parlours/:id' do
+        find_pizza_parlour
+        redirect_if_not_owner
+        if @pizza_parlour.update(params[:pizza_parlour]) 
+            redirect "/pizza-parlours/#{pizza_parlour.id}"
+        else 
+            redirect "/pizza-parlours/new"
+        end
+    end 
+
 
     private 
 
@@ -32,5 +60,12 @@ class PizzaParloursController < ApplicationController
         @pizza_parlour = PizzaParlour.find_by_id(params[:id])
     end
     
+    def redirect_if_not_owner
+        redirect "/pizza-parlours" unless @pizza_parlours.user == current_user
+    end
 
+    def redirect_if_not_exit
+        redirect "/pizza-parlours" unless @pizza_parlour
+    
+    end 
 end
