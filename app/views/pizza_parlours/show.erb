@@ -1,0 +1,7 @@
+<h3 class="green-text text-darken-3"><%= @pizza_parlour.name%><h3>
+
+<p>Description: <%= @pizza_parlour.descritpion ? @pizza_parlour.description : "Not added" %></p>
+
+<% if pizza_parlour.user == current_user %>
+<a href="/pizza-parlours/<%= @pizza_parlours.id %>/edit">Edit</a>
+<% end %>
