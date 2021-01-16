@@ -3,6 +3,7 @@ ENV["SINATRA_ENV"] ||= "development"
 require_relative './config/environment'
 require 'sinatra/activerecord/rake'
 
+
 desc "Drop databases because Sinatra's drop is broken"
 task :drop do
   puts "dropping databases..."

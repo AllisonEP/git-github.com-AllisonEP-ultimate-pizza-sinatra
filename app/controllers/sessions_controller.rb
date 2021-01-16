@@ -8,7 +8,6 @@ class SessionsController < ApplicationController
 
     post '/signup' do
         user = User.new(params)
-        binding.pry
         if user.save 
             session[:user_id] = user.id
             redirect "/pizza-parlours"
@@ -18,15 +17,15 @@ class SessionsController < ApplicationController
 
     get "/login" do
         redirect_if_logged_in 
-    erb :'sessions/login'
+        erb :'sessions/login'
     end
 
     post "/login" do
         user = User.find_by_username(params[:username])
 
-        if user && user.authentificate(params[:password])
+        if user && user.authenticate(params[:password])
             session[:user_id] = user.id
-            redirect "/pizza_parlours"
+            redirect "/pizza-parlours"
         else
             redirect "/login"
         end

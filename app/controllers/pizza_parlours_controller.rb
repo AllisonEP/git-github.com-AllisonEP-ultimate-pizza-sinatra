@@ -7,12 +7,27 @@ class PizzaParloursController < ApplicationController
     end 
 
     get '/pizza-parlours/new' do
+        redirect_if_not_logged_in
         erb :'pizza-parlours/new'
+    end
+
+
+    get '/pizza-parlours/:id' do
+        find_pizza_parlour
+        redirect_if_not_exist
+        erb :'pizza-parlours/show'
+    end
+
+    get '/pizza-parlours/:id/edit' do
+        find_pizza_parlour
+        redirect_if_not_exist
+        redirect_if_not_owner
+        erb :'pizza-parlours/edit'
     end
 
     post '/pizza-parlours' do
         pizza_parlour = current_user.pizza_parlours.build(params[:pizza_parlour])
-
+  
         if pizza_parlour.save
             redirect '/pizza-parlours'
         else
@@ -20,19 +35,17 @@ class PizzaParloursController < ApplicationController
         end
     end
 
-    get '/pizza-parlours/:id' do
+
+
+    patch '/pizza-parlours/:id' do
         find_pizza_parlour
-        redirect_if_not_exist
-        erb :'pizza_parlours/show'
-    end
-
-    get '/pizza_parlours/:id/edit' do
-        find_pizza_parlours
-        redirect_if_not_exist
         redirect_if_not_owner
-        erb :'pizza-parlours/edit'
-    end
-
+        if @pizza_parlour.update(params[:pizza_parlour]) 
+            redirect "/pizza-parlours/#{@pizza_parlour.id}"
+        else 
+            redirect "/pizza-parlours/new"
+        end
+    end 
 
     delete '/pizza-parlours/:id' do
         find_pizza_parlour
@@ -43,17 +56,6 @@ class PizzaParloursController < ApplicationController
     end
 
 
-    patch '/pizza-parlours/:id' do
-        find_pizza_parlour
-        redirect_if_not_owner
-        if @pizza_parlour.update(params[:pizza_parlour]) 
-            redirect "/pizza-parlours/#{pizza_parlour.id}"
-        else 
-            redirect "/pizza-parlours/new"
-        end
-    end 
-
-
     private 
 
     def find_pizza_parlour
@@ -61,10 +63,10 @@ class PizzaParloursController < ApplicationController
     end
     
     def redirect_if_not_owner
-        redirect "/pizza-parlours" unless @pizza_parlours.user == current_user
+        redirect "/pizza-parlours" unless @pizza_parlour.user == current_user
     end
 
-    def redirect_if_not_exit
+    def redirect_if_not_exist
         redirect "/pizza-parlours" unless @pizza_parlour
     
     end 
